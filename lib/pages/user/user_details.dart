@@ -98,7 +98,6 @@
 //
 
 //
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,7 +107,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +120,7 @@ class MyApp extends StatelessWidget {
 }
 
 class UserList extends StatefulWidget {
-  const UserList({super.key});
+  const UserList({Key? key});
 
   @override
   _UserListState createState() => _UserListState();
@@ -132,7 +131,7 @@ class _UserListState extends State<UserList> {
   final _usersCollectionRef = FirebaseFirestore.instance
       .collection('Users')
       .where('email',
-          isEqualTo: FirebaseAuth.instance.currentUser?.email.toString());
+      isEqualTo: FirebaseAuth.instance.currentUser?.email.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +147,7 @@ class _UserListState extends State<UserList> {
               return Center(
                   child: Text('Error: ${snapshot.error}',
                       style:
-                          const TextStyle(fontSize: 18.0, color: Colors.red)));
+                      const TextStyle(fontSize: 18.0, color: Colors.red)));
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
@@ -161,9 +160,9 @@ class _UserListState extends State<UserList> {
 
               print('itemBuilder');
               print(snapshot.data!.docs.length);
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (BuildContext context, int index) {
+              return AnimatedList(
+                initialItemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index, animation) {
                   final doc = snapshot.data!.docs[index];
 
                   final String name = doc['name'];
@@ -171,39 +170,50 @@ class _UserListState extends State<UserList> {
                   final String phoneNo = doc['phoneNo'];
                   final String location = doc['location'];
 
-                  return Card(
-                    elevation: 9.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ListTile(
+                  return SlideTransition(
+                    position: animation.drive(Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    )),
+                    child: Card(
+                      elevation: 9.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
 
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
 
-                        title: Text(name,
+                        child: ListTile(
+                          title: Text(
+                            name,
                             style: const TextStyle(
-                                fontSize: 26.0, fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Email: $email',
-                              style: TextStyle(fontSize: 20),
-                              // style: const TextStyle(fontSize: 18.0),
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              'Phone: $phoneNo',
-                              style: TextStyle(fontSize: 20),
-                              // style: const TextStyle(fontSize: 18.0),
-                            ),
-                            Text(
-                              'Location: $location',
-                              style: TextStyle(fontSize: 20),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8,),
+                              Text(
+                                'Email: $email',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              const SizedBox(height: 8,),
 
-                              // style: const TextStyle(fontSize: 18.0),
-                            ),
-                          ],
+                              Text(
+                                'Phone: $phoneNo',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              const SizedBox(height: 8,),
+
+                              Text(
+                                'Location: $location',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -218,89 +228,3 @@ class _UserListState extends State<UserList> {
     );
   }
 }
-
-
-//
-//
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-//
-// void main() {
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Current User Data',
-//       home: CurrentUserData(),
-//     );
-//   }
-// }
-//
-// class CurrentUserData extends StatefulWidget {
-//   @override
-//   _CurrentUserDataState createState() => _CurrentUserDataState();
-// }
-//
-// class _CurrentUserDataState extends State<CurrentUserData> {
-//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//
-//   Future<DocumentSnapshot<Map<String, dynamic>>> _fetchUserData() async {
-//     final currentUser = FirebaseAuth.instance.currentUser;
-//     if (currentUser != null) {
-//       return _firestore.collection('Users').doc(currentUser.uid).get();
-//     } else {
-//       throw Exception('No user is currently logged in.');
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Current User Data')),
-//       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-//         future: _fetchUserData(),
-//         builder: (BuildContext context,
-//             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-//           if (snapshot.hasError) {
-//             return Center(child: Text('Error: ${snapshot.error}'));
-//           }
-//
-//           if (snapshot.connectionState == ConnectionState.done) {
-//             final data = snapshot.data!.data();
-//             if (data != null) {
-//               final String name = data['name'];
-//               final String email = data['email'];
-//               final String phoneNo = data['phoneNo']; // Updated field name
-//               final String location = data['location'];
-//
-//               return Padding(
-//                 padding: const EdgeInsets.all(16.0),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text('Name: $name', style: TextStyle(fontSize: 18)),
-//                     SizedBox(height: 8),
-//                     Text('Email: $email', style: TextStyle(fontSize: 18)),
-//                     SizedBox(height: 8),
-//                     Text('Phone: $phoneNo', style: TextStyle(fontSize: 18)),
-//                     SizedBox(height: 8),
-//                     Text('Location: $location', style: TextStyle(fontSize: 18)),
-//                   ],
-//                 ),
-//               );
-//             } else {
-//               return Center(child: Text('User data not found.'));
-//             }
-//           }
-//
-//           return Center(child: CircularProgressIndicator());
-//         },
-//       ),
-//     );
-//   }
-// }

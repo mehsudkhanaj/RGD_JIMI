@@ -31,8 +31,9 @@ class _UserMainState extends State<UserMain> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Dashboard(),
     const Profile(),
-    const MyApp(),
+    const UserList(),
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -41,37 +42,112 @@ class _UserMainState extends State<UserMain> {
 
   @override
   Widget build(BuildContext context) {
-    String text = "Stop Service";
-    Color color = Colors.red;
     final email = FirebaseAuth.instance.currentUser!.email;
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Welcome To RGD"),
-            ElevatedButton(
-              onPressed: () async {
-                FlutterBackgroundService().invoke("stopService");
-                await FirebaseAuth.instance.signOut();
-                // ignore: use_build_context_synchronously
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
-                    (route) => false);
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-              child: const Text('Logout'),
+        title: const Text("Welcome To RGD"),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              FlutterBackgroundService().invoke("stopService");
+              await FirebaseAuth.instance.signOut();
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Login(),
+                ),
+                    (route) => false,
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white, backgroundColor: Colors.blue[400],
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 3,
+              shadowColor: Colors.blue.withOpacity(0.4),
             ),
-          ],
+            child: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const UserAccountsDrawerHeader(
+                accountName: Text("Muhammad Jamshed"),
+                accountEmail: Text("jamshed2019@namal.edu.pk"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/jimi.jpg"),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: const Text('Dashboard'),
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.event_note_outlined),
+                title: const Text('User Details'),
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add_shopping_cart),
+                title: const Text('Order Service'),
+                onTap: () {
+                  _showOrderServiceForm(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.contact_phone),
+                title: const Text('Contact'),
+                onTap: () {
+                  _showContactDetails(context);
+                },
+              ),
+            ],
+          ),
         ),
       ),
+
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(flex: 9, child: _widgetOptions.elementAt(_selectedIndex)),
+          Expanded(
+            flex: 9,
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
           Expanded(
             flex: 1,
             child: Row(
@@ -92,7 +168,6 @@ class _UserMainState extends State<UserMain> {
                     print(await service.isRunning());
                     initService();
                     service.invoke("setAsForeground");
-                    // service.startService();
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   child: const Text('Start Alarm'),
@@ -110,7 +185,7 @@ class _UserMainState extends State<UserMain> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Setting',
+            label: 'Settings',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event_note_outlined),
@@ -121,6 +196,36 @@ class _UserMainState extends State<UserMain> {
         selectedItemColor: Colors.red,
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  void _showOrderServiceForm(BuildContext context) {
+    // ... i will do code later for service form
+  }
+
+  void _showContactDetails(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Contact Information'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildContactItem('Jamshed', '03029015909'),
+              _buildContactItem('Nida', '03029015909'),
+              _buildContactItem('Muthara', '03029015909'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildContactItem(String name, String contactNumber) {
+    return ListTile(
+      title: Text(name),
+      subtitle: Text(contactNumber),
     );
   }
 }

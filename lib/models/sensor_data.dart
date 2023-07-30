@@ -61,9 +61,7 @@ Stream<QuerySnapshot> getStreamSensorDataByEmail(String email) {
       .collection('Sensor Data')
       .where('email', isEqualTo: email)
       .snapshots();
-  // .map((querySnapshot) => querySnapshot.docs
-  // .map((doc) => SensorData.fromFirestore(doc))
-  // .toList());
+
 }
 
 void addSensorData(String email, SensorData sensorData) {

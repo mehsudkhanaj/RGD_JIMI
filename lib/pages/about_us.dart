@@ -51,7 +51,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 title: 'Conclusion',
                 content:
                     'The convergence of IoT, web development, and Android applications has paved the way for transformative solutions that prioritize the safety and well-being of individuals. Our life-saving product, designed to detect gas leakages in real time, serves as a vital safeguard against potential disasters. By employing advanced sensors, multi-channel alerts, and an automatic shutdown valve, our system ensures that users are promptly notified and that the gas flow is halted, thereby preventing potential hazards. With our intuitive interface and user-friendly control options, we aim to make this innovative solution accessible to a wide range of users, empowering them to protect their lives and properties effectively. Together, let us embrace technology to save lives and create a safer world for everyone.'),
-            // SizedBox(height: 10),
+
           ],
         ),
       ),

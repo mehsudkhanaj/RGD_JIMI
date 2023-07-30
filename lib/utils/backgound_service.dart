@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,9 +68,8 @@ class BackgroundService {
     final service = FlutterBackgroundService();
     await service.configure(
       androidConfiguration: AndroidConfiguration(
-        // this will be executed when app is in foreground or background in separated isolate
         onStart: onStart,
-        // auto start service
+
         autoStart: true,
         isForegroundMode: true,
       ),
@@ -106,8 +104,6 @@ class BackgroundService {
     });
     backgroundTaskEntryPoint();
   }
-// to ensure this is executed
-// run app from xcode, then from xcode menu, select Simulate Background Fetch
 
   @pragma('vm:entry-point')
   static Future<bool> onIosBackground(ServiceInstance service) async {

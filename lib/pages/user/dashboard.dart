@@ -11,7 +11,6 @@ class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
-
 class _DashboardState extends State<Dashboard> {
   final email = FirebaseAuth.instance.currentUser!.email;
   final _usersCollectionRef = FirebaseFirestore.instance
@@ -22,6 +21,8 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
       backgroundColor: Colors.transparent,
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -29,21 +30,20 @@ class _DashboardState extends State<Dashboard> {
           stream: getStreamSensorDataByEmail(email as String),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              // Data is available, convert it to a list of SensorData objects
               List<SensorData> sensorDataList = snapshot.data!.docs
                   .map((doc) => SensorData.fromFirestore(doc))
                   .toList();
               Future.delayed(
                 const Duration(seconds: 5),
                 () {
-                  if (int.parse(sensorDataList.first.sensorValue) >= 1400) {
+                  if (int.parse(sensorDataList.first.sensorValue) >= 1900) {
                     Get.snackbar('Gas Alert', 'High Gas Alert Please Check',
                         backgroundColor: Colors.red, colorText: Colors.white);
                     //Stop Sensor
                   }
                 },
               );
-              // Display the sensor data in a ListView or other widget
+
               return ListView.builder(
                 itemCount: sensorDataList.length,
                 itemBuilder: (context, index) {
@@ -95,7 +95,11 @@ class _DashboardState extends State<Dashboard> {
                                       final String phoneNo = doc['phoneNo'];
                                       final String location = doc['location'];
 
-                                      return Text(name);
+                                      return Column(
+                                        children: [
+                                          Text(name),
+                                        ],
+                                      );
                                     } else {
                                       return const Text('');
                                     }
@@ -113,132 +117,7 @@ class _DashboardState extends State<Dashboard> {
             }
           },
         ),
-        // StreamBuilder<QuerySnapshot>(
-        //   stream: getStreamSensorDataByEmail('mutahara2023@namal.edu.pk'),
-        //   builder:
-        //       (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //     if (snapshot.hasError) {
-        //       return Center(
-        //           child: Text('Error: ${snapshot.error}',
-        //               style: TextStyle(fontSize: 18.0, color: Colors.red)));
-        //     }
-
-        //     if (snapshot.connectionState == ConnectionState.done) {
-        //       if (!snapshot.hasData || snapshot.data == null) {
-        //         return Center(
-        //             child: Text('Error: ${snapshot.error}',
-        //                 style: TextStyle(fontSize: 18.0, color: Colors.red)));
-        //       }
-
-        //       print('itemBuilder');
-        //       print(snapshot.data!.docs.length);
-        //       return ListView.builder(
-        //         itemCount: snapshot.data!.docs.length,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           final doc = snapshot.data!.docs[index];
-
-        //           final String email = doc['email'];
-        //           final String sensorName = doc['sensorName'];
-        //           final String sensorValue = doc['sensorValue'];
-
-        //           return Card(
-        //             elevation: 5.0,
-        //             shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(10.0),
-        //             ),
-        //             child: ListTile(
-        //               title: Text(email.split('@')[0],
-        //                   style: const TextStyle(
-        //                       fontSize: 22.0, fontWeight: FontWeight.bold)),
-        //               subtitle: Column(
-        //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                 children: [
-        //                   Text('Sensor Name: $sensorName',
-        //                       style: const TextStyle(fontSize: 18.0)),
-        //                   Text('Sensor Value: $sensorValue',
-        //                       style: const TextStyle(fontSize: 18.0)),
-        //                 ],
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       );
-        //     }
-        //     return const Center(child: CircularProgressIndicator());
-        //   },
-        // ),
       ),
-      // Center(
-      //   child: Container(
-      //     width: double.infinity,
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: NetworkImage(
-      //             "https://live.staticflickr.com/1919/31771305328_4d5a05bcf2_b.jpg"),
-      //         fit: BoxFit.cover,
-      //       ),
-      //     ),
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         Column(
-      //           children: [
-      //             CircleAvatar(
-      //               radius: 60,
-      //               backgroundColor: Colors.white.withOpacity(0.9),
-      //               child: CircleAvatar(
-      //                 radius: 55,
-      //                 backgroundImage: AssetImage('assets/images/mydp.jpeg'),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         SizedBox(width: 10),
-      //         Row(
-      //           children: [
-      //             CircleAvatar(
-      //               radius: 60,
-      //               backgroundColor: Colors.white.withOpacity(0.9),
-      //               child: CircleAvatar(
-      //                 radius: 55,
-      //                 backgroundImage: AssetImage('assets/images/nida.jpeg'),
-      //               ),
-      //             ),
-      //             SizedBox(width: 152),
-      //             CircleAvatar(
-      //               radius: 60,
-      //               backgroundColor: Colors.white.withOpacity(0.9),
-      //               child: CircleAvatar(
-      //                 radius: 55,
-      //                 backgroundImage:
-      //                     AssetImage('assets/images/mutahara.jpeg'),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         SizedBox(
-      //           height: 10,
-      //         ),
-      //         SizedBox(height: 20),
-      //         Container(
-      //           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      //           decoration: BoxDecoration(
-      //             borderRadius: BorderRadius.circular(10),
-      //             color: Colors.black.withOpacity(0.7),
-      //           ),
-      //           child: Text(
-      //             "$email",
-      //             style: TextStyle(
-      //               fontSize: 22,
-      //               fontWeight: FontWeight.bold,
-      //               color: Colors.white,
-      //             ),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

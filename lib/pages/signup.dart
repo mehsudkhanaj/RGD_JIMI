@@ -5,17 +5,13 @@ import 'package:rgd_app/pages/login.dart';
 import 'package:rgd_app/pages/user/user_main.dart';
 
 import '../models/user_model.dart';
-
 class Signup extends StatefulWidget {
   Signup({Key? key}) : super(key: key);
-
   @override
   _SignupState createState() => _SignupState();
 }
-
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
-
   var email = "";
   var name = "";
   var password = "";
@@ -24,8 +20,7 @@ class _SignupState extends State<Signup> {
   var alertPhone = '';
   var alertEmail = '';
   var location = '';
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
+  var id = '';
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -34,10 +29,9 @@ class _SignupState extends State<Signup> {
   final phoneNoController = TextEditingController();
   final alertEmailController = TextEditingController();
   final alertPhoneController = TextEditingController();
-
+  final idController = TextEditingController();
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -46,16 +40,15 @@ class _SignupState extends State<Signup> {
     alertEmailController.dispose();
     alertPhoneController.dispose();
     nameController.dispose();
+    idController.dispose();
     super.dispose();
   }
-
   registration() async {
     if (password == confirmPassword) {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         print(userCredential);
-
         UserModel user = UserModel(
           name: FirebaseAuth.instance.currentUser!.email!.split('@')[0],
           email: FirebaseAuth.instance.currentUser!.email.toString(),
@@ -140,16 +133,7 @@ class _SignupState extends State<Signup> {
         )),
       ),
       body:
-          //  Container(
-          //   decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage('assets/images/signup.jpg'),
-          //       fit: BoxFit.cover,
-          //       colorFilter: ColorFilter.mode(
-          //           Colors.lightGreenAccent.withOpacity(0.6), BlendMode.dstATop),
-          //     ),
-          //   ),
-          //   child:
+
           Form(
         key: _formKey,
         child: Padding(
@@ -200,8 +184,9 @@ class _SignupState extends State<Signup> {
                   },
                 ),
               ),
+
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+                margin: EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   autofocus: false,
                   obscureText: true,
@@ -231,7 +216,7 @@ class _SignupState extends State<Signup> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   autofocus: false,
                   obscureText: true,
@@ -285,7 +270,7 @@ class _SignupState extends State<Signup> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                margin: const EdgeInsets.symmetric(vertical: 5.0),
                 child: TextFormField(
                   autofocus: false,
                   keyboardType: TextInputType.phone,
@@ -370,7 +355,6 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       onPressed: () {
-                        // Validate returns true if the form is valid, otherwise false.
                         if (_formKey.currentState!.validate()) {
                           setState(() {
                             email = emailController.text;

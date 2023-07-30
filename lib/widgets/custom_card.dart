@@ -21,12 +21,11 @@ class CustomCard extends StatelessWidget {
           children: [
             Text(
               title,
-              // textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
             ),
             const Divider(
               thickness: 1,
-              color: Colors.orange,
+              color: Colors.blue,
             ),
             isProfile
                 ? ListView.builder(

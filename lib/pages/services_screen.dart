@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import '../models/service_form.dart';
-import '../models/user_model.dart';
 
 class ServicesScreen extends StatefulWidget {
   const ServicesScreen({super.key});
@@ -11,30 +9,24 @@ class ServicesScreen extends StatefulWidget {
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
-
 class _ServicesScreenState extends State<ServicesScreen> {
   final _formKey = GlobalKey<FormState>();
   var name = "";
   var email = "";
   var phone = "";
   var desc = '';
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final descriptionController = TextEditingController();
   final phoneController = TextEditingController();
-
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     emailController.dispose();
     descriptionController.dispose();
     phoneController.dispose();
     nameController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

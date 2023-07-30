@@ -16,8 +16,6 @@ class _LoginState extends State<Login> {
   var name = "";
   var email = "";
   var password = "";
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -62,17 +60,15 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent.withOpacity(0.7),
+        backgroundColor: Colors.blue.withOpacity(0.7),
         title: const Center(child: Text("User Login")),
       ),
       body: Container(

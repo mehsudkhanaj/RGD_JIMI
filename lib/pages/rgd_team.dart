@@ -13,6 +13,7 @@ class _RGDTeamState extends State<RGDTeam> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         backgroundColor: Colors.blue,
         title: Center(child: const Text('RGD Team')),
       ),
       body: Container(
@@ -23,7 +24,7 @@ class _RGDTeamState extends State<RGDTeam> {
             CustomCard(
 
               title:
-                  'Reliable Support for Any Emergency: Contact Our Team for Device Malfunctions Gas Leaks',
+                  'Contact Our Team In Case of Emergency',
 
 
               content: 'Muhammad jamshed\nNida Khan\nMutahara ghulam',
@@ -59,13 +60,19 @@ class _RGDTeamState extends State<RGDTeam> {
             ),
             Card(
               child: ListTile(
-                title: Center(child: Text("Your Safety Is Our Main Priority")),
-                textColor: Colors.purple,
-                tileColor: Colors.yellow,
+                title: Center(child: Text("Your Safety Is Our Main Priority", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+                trailing: Icon(Icons.security),
+                textColor: Colors.white,
+                tileColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
 
-
+                  ),
+                ),
               ),
-            ),
+            )
+
 
           ],
         ),

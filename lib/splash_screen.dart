@@ -24,7 +24,6 @@ class _SplashScreenState extends State<SplashScreen> {
       );
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,15 +32,21 @@ class _SplashScreenState extends State<SplashScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/gaswork.jpg'),
+            image: AssetImage('assets/images/png.jpeg'),
             fit: BoxFit.cover,
           ),
         ),
         child: const Center(
-          child: Text(
-            "Real Time Gas Detector",
-            style: TextStyle(
-                fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+
+              Text(
+                "Real Time Gas Detector",
+                style: TextStyle(
+                    fontSize: 21, fontWeight: FontWeight.bold, color: Colors.red),
+              ),
+            ],
           ),
         ),
       ),
